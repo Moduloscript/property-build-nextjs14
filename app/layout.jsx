@@ -11,7 +11,7 @@ export const metadata = {
   keywords:"Property as the Best Rental in The country"
 };
 
-export default function MainLayout({ children }) {
+export default function mainLayout({ children }) {
   return (
     <html lang="en">
       <body>
