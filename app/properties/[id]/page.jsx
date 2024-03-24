@@ -5,7 +5,8 @@ import { fetchProperty } from "@/utils/requests";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import Link from "next/link";
 import PropertyDetails from "@/components/PropertyDetails";
-import {FaArrowLeft} from "react-icons/fa"
+import Spinner from "@/components/Spinner";
+import { FaArrowLeft } from "react-icons/fa";
 
 const PropertyId = () => {
   const { id } = useParams();
@@ -38,6 +39,7 @@ const PropertyId = () => {
   }
   return (
     <>
+       {loading && <Spinner />}
       {!loading && property && (
         <>
           <PropertyHeaderImage image={property.images[0]} />
@@ -48,7 +50,7 @@ const PropertyId = () => {
               <Link
                 href='/properties'
                 className='text-blue-500 hover:text-blue-600 flex items-center'>
-                <FaArrowLeft className="mr-2"/> Back to Properties
+                <FaArrowLeft className='mr-2' /> Back to Properties
               </Link>
             </div>
           </section>
