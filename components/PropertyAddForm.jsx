@@ -60,24 +60,24 @@ const PropertyAddForm = () => {
     const { value, checked } = e.target;
 
     // Clone the current array
-    const updatedAmenites = [...fields.amenities];
+    const updatedAmenities = [...fields.amenities];
 
     if (checked) {
       // Add value to array
-      updatedAmenites.push(value);
+      updatedAmenities.push(value);
     } else {
       // Remove value from array
-      const index = updatedAmenites.indexOf(value);
+      const index = updatedAmenities.indexOf(value);
 
       if (index !== -1) {
-        updatedAmenites.splice(index, 1);
+        updatedAmenities.splice(index, 1);
       }
     }
 
     // Update state with updated array
     setFields((prevFields) => ({
       ...prevFields,
-      amenities: updatedAmenites,
+      amenities: updatedAmenities,
     }));
   };
 
