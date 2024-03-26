@@ -35,13 +35,69 @@ const PropertyAddForm = () => {
     setMounted(true);
   }, []);
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const handleAmenitiesChange = () => {};
-
-    const handleImageChange = () => {
-        
+    // Checking Nested Property
+    if (name.includes(".")) {
+      const [outerKey, innerKey] = name.split(".");
+      setFields((prevFields) => ({
+        ...prevFields,
+        [outerKey]: {
+          ...prevFields[outerKey],
+          [innerKey]: value,
+        },
+      }));
+    } else {
+      setFields((prevFields) => ({
+        ...prevFields,
+        [name]: value,
+      }));
     }
+  };
+
+  const handleAmenitiesChange = (e) => {
+    const { value, checked } = e.target;
+
+    // Clone the current array
+    const updatedAmenites = [...fields.amenities];
+
+    if (checked) {
+      // Add value to array
+      updatedAmenites.push(value);
+    } else {
+      // Remove value from array
+      const index = updatedAmenites.indexOf(value);
+
+      if (index !== -1) {
+        updatedAmenites.splice(index, 1);
+      }
+    }
+
+    // Update state with updated array
+    setFields((prevFields) => ({
+      ...prevFields,
+      amenities: updatedAmenites,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const { files } = e.target;
+
+    // Clone images array
+    const updatedImages = [...fields.images];
+
+    // Add new files to the array
+    for (const file of files) {
+      updatedImages.push(file);
+    }
+
+    // Update state with array of images
+    setFields((prevFields) => ({
+      ...prevFields, 
+      images: updatedImages,
+    }));
+  };
 
   return (
     mounted && (
@@ -365,9 +421,9 @@ const PropertyAddForm = () => {
                 id='amenity_smart_tv'
                 name='amenities'
                 value='Smart TV'
-                              className='mr-2'
-                              checked={fields.amenities.includes("Smart TV")}
-                              onChange={handleAmenitiesChange}
+                className='mr-2'
+                checked={fields.amenities.includes("Smart TV")}
+                onChange={handleAmenitiesChange}
               />
               <label htmlFor='amenity_smart_tv'>Smart TV</label>
             </div>
@@ -379,7 +435,7 @@ const PropertyAddForm = () => {
                 value='Coffee Maker'
                 className='mr-2'
                 checked={fields.amenities.includes("Coffee Maker")}
-                              onChange={handleAmenitiesChange}
+                onChange={handleAmenitiesChange}
               />
               <label htmlFor='amenity_coffee_maker'>Coffee Maker</label>
             </div>
@@ -399,9 +455,9 @@ const PropertyAddForm = () => {
                 type='number'
                 id='weekly_rate'
                 name='rates.weekly'
-                              className='border rounded w-full py-2 px-3'
-                             value={fields.rates.weekly} 
-                             onChange={handleChange}
+                className='border rounded w-full py-2 px-3'
+                value={fields.rates.weekly}
+                onChange={handleChange}
               />
             </div>
             <div className='flex items-center'>
@@ -412,9 +468,9 @@ const PropertyAddForm = () => {
                 type='number'
                 id='monthly_rate'
                 name='rates.monthly'
-                              className='border rounded w-full py-2 px-3'
-                              value={fields.rates.monthly} 
-                             onChange={handleChange}
+                className='border rounded w-full py-2 px-3'
+                value={fields.rates.monthly}
+                onChange={handleChange}
               />
             </div>
             <div className='flex items-center'>
@@ -426,9 +482,8 @@ const PropertyAddForm = () => {
                 id='nightly_rate'
                 name='rates.nightly'
                 className='border rounded w-full py-2 px-3'
-                value={fields.rates.nightly} 
-                             onChange={handleChange}
-             
+                value={fields.rates.nightly}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -446,9 +501,8 @@ const PropertyAddForm = () => {
             name='seller_info.name.'
             className='border rounded w-full py-2 px-3'
             placeholder='Name'
-            value={fields.seller_info.name} 
-                             onChange={handleChange}
-
+            value={fields.seller_info.name}
+            onChange={handleChange}
           />
         </div>
         <div className='mb-4'>
@@ -463,9 +517,9 @@ const PropertyAddForm = () => {
             name='seller_info.email'
             className='border rounded w-full py-2 px-3'
             placeholder='Email address'
-                      required
-                      value={fields.seller_info.email} 
-                             onChange={handleChange}
+            required
+            value={fields.seller_info.email}
+            onChange={handleChange}
           />
         </div>
         <div className='mb-4'>
@@ -479,9 +533,9 @@ const PropertyAddForm = () => {
             id='seller_phone'
             name='seller_info.phone'
             className='border rounded w-full py-2 px-3'
-                      placeholder='Phone'
-                      value={fields.seller_info.phone} 
-                             onChange={handleChange}
+            placeholder='Phone'
+            value={fields.seller_info.phone}
+            onChange={handleChange}
           />
         </div>
 
@@ -497,8 +551,8 @@ const PropertyAddForm = () => {
             name='images'
             className='border rounded w-full py-2 px-3'
             accept='image/*'
-                      multiple
-                      onChange={handleImageChange}
+            multiple
+            onChange={handleImageChange}
           />
         </div>
 
