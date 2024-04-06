@@ -13,6 +13,7 @@ const PropertyId = () => {
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const fetchPropertyData = async () => {
       if (!id) return;

@@ -3,29 +3,29 @@ const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 // Fetch Plural Properties (All)
 
 async function fetchProperties() {
-    try {
-      //Handle the case where the domain is not available yet 
-      if (!apiDomain) {
-        return []
-      }
-
-      const res = await fetch(`${apiDomain}/properties`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch properties");
-      }
-      return res.json();
-    } catch (error) {
-      console.log(error);
+  try {
+    //Handle the case where the domain is not available yet
+    if (!apiDomain) {
       return [];
     }
+
+    const res = await fetch(`${apiDomain}/properties`, { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error("Failed to fetch properties");
+    }
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    return [];
   }
+}
 
 // Fetch Single property
 async function fetchProperty(id) {
   try {
-    //Handle the case where the domain is not available yet 
+    //Handle the case where the domain is not available yet
     if (!apiDomain) {
-      return null
+      return null;
     }
 
     const res = await fetch(`${apiDomain}/properties/${id}`);
@@ -39,5 +39,4 @@ async function fetchProperty(id) {
   }
 }
 
-
-  export {fetchProperties, fetchProperty}
+export { fetchProperties, fetchProperty };

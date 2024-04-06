@@ -9,21 +9,10 @@ import {
 } from 'react-icons/fa';
 
 const PropertyCard = ({ property }) => {
-
-  const {
-    name,
-    images,
-    type,
-    rates,
-    location,
-    beds,
-    _id,
-    baths,
-    square_feet,
-  } = property;
-
+  console.log(property)
   const getRateDisplay = () => {
     const { rates } = property;
+
 
     if (rates.monthly) {
       return `${rates.monthly.toLocaleString()}/mo`;
@@ -36,14 +25,17 @@ const PropertyCard = ({ property }) => {
 
   return (
     <div className='rounded-xl shadow-md relative'>
-      <Image
-        src = {`/images/properties/${images[0]}`}
-        alt=''
-        height={0}
-        width={0}
-        sizes='100vw'
-        className='w-full h-auto rounded-t-xl'
-      />
+      {property.images && property.images.length > 0 ? (
+    <Image
+      src={property.images[0]} 
+      alt=''
+      height={600} // Adjust height as needed
+      width={800} // Adjust width as needed
+      className='w-full h-auto rounded-t-xl'
+    />
+  ) : (
+    <div className='w-full h-auto rounded-t-xl bg-gray-200'></div>
+  )}
       <div className='p-4'>
         <div className='text-left md:text-center lg:text-left mb-6'>
           <div className='text-gray-600'>{property.type}</div>

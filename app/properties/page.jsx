@@ -1,28 +1,27 @@
-import PropertyCard from "@/components/PropertyCard";
-import {fetchProperties} from "@/utils/requests"
+import PropertyCard from "../../components/PropertyCard";
+import { fetchProperties } from "@/utils/requests";
 
+const PropertiesPage = async () => {
+  const data = await fetchProperties();
 
-const PropertiesPage  = async ()  => {
-const properties = await fetchProperties();
+  const recentProperties = data.properties;
 
-
-// Sort Properties by date 
-properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  recentProperties.sort((a, b) => new Date(b.created) - new Date(a.created));
   return (
-    // <!-- All Listings -->
-    <section className='px-4 py-6'>
-      <div className='container-xl lg:container m-auto px-4 py-6'>
-        {properties.length === 0 ? (
-          <div className='bg-red-600'>No Property Found</div>
-        ) : (
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            {properties.map((property) => (
+    <section class='px-4 py-6'>
+      <div class='container-xl lg:container m-auto px-4 py-6'>
+        <div class='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          {recentProperties.length === 0 ? (
+            <p>No Properties Found</p>
+          ) : (
+            recentProperties.map((property) => (
               <PropertyCard key={property._id} property={property} />
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </div>
     </section>
   );
 };
+
 export default PropertiesPage;
