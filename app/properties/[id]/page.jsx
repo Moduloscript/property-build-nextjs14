@@ -7,6 +7,7 @@ import Link from "next/link";
 import PropertyDetails from "@/components/PropertyDetails";
 import Spinner from "@/components/Spinner";
 import { FaArrowLeft } from "react-icons/fa";
+import  PropertyImages from "@/components/PropertyImages"
 
 const PropertyId = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const PropertyId = () => {
 
   if (!property && !loading) {
     return (
-      <h1 className='text-center text-2xl mt-10 font-bold text-red-500 '>
+      <h1 className='mt-10 text-2xl font-bold text-center text-red-500 '>
         Property not found
       </h1>
     );
@@ -47,21 +48,22 @@ const PropertyId = () => {
 
           {/* <!-- Go Back --> */}
           <section>
-            <div className='container m-auto py-6 px-6'>
+            <div className='container px-6 py-6 m-auto'>
               <Link
                 href='/properties'
-                className='text-blue-500 hover:text-blue-600 flex items-center'>
+                className='flex items-center text-blue-500 hover:text-blue-600'>
                 <FaArrowLeft className='mr-2' /> Back to Properties
               </Link>
             </div>
           </section>
           <section className='bg-blue-50'>
-            <div className='container m-auto py-10 px-6'>
-              <div className='grid grid-cols-1 md:grid-cols-70/30 w-full gap-6'>
+            <div className='container px-6 py-10 m-auto'>
+              <div className='grid w-full grid-cols-1 gap-6 md:grid-cols-70/30'>
                 <PropertyDetails property={property} />
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images}/>
         </>
       )}
     </>

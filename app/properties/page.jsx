@@ -8,9 +8,9 @@ const PropertiesPage = async () => {
 
   recentProperties.sort((a, b) => new Date(b.created) - new Date(a.created));
   return (
-    <section class='px-4 py-6'>
-      <div class='container-xl lg:container m-auto px-4 py-6'>
-        <div class='grid grid-cols-1 md:grid-cols-3 gap-6'>
+    <section className='px-4 py-6'>
+      <div className='px-4 py-6 m-auto container-xl lg:container'>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
           {recentProperties.length === 0 ? (
             <p>No Properties Found</p>
           ) : (
