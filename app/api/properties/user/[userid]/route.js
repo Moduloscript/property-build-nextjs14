@@ -1,5 +1,5 @@
-import connectDB from "@/config/database";
-import Property from "@/models/Property";
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
 
 // GET /api/properties/user/:userId
 export const GET = async (request, { params }) => {
@@ -9,13 +9,8 @@ export const GET = async (request, { params }) => {
     const userId = params.userId;
 
     if (!userId) {
-      return new Response("User Id is required", { status: 400 });
+      return new Response('User ID is required', { status: 400 });
     }
-
-    const page = request.nextUrl.searchParams.get("page") || 1;
-    const pageSize = request.nextUrl.searchParams.get("pageSize") || 6;
-
-    const skip = (page - 1) * pageSize;
 
     const properties = await Property.find({ owner: userId });
 
@@ -24,6 +19,6 @@ export const GET = async (request, { params }) => {
     });
   } catch (error) {
     console.log(error);
-    return new Response("Something Went Wrong", { status: 500 });
+    return new Response('Something Went Wrong', { status: 500 });
   }
 };
