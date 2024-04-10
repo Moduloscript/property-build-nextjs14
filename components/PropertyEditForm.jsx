@@ -2,15 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { fetchProperty } from "@/utils/requests";
 
-
-
 const PropertyEditForm = () => {
-    const {id} = useParams()
-    const router = useRouter()
-
+  const { id } = useParams();
+  const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
@@ -39,39 +36,37 @@ const PropertyEditForm = () => {
     },
   });
 
-    const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
 
+    // Fetch property Data for Form
+    const fetchPropertyData = async () => {
+      try {
+        const propertyData = await fetchProperty(id);
 
-      // Fetch property Data for Form
-      const fetchPropertyData = async () => {
-        try {
-            const propertyData = await fetchProperty(id)
-
-            //   Check the Null state Rates and Empty State 
-            if(propertyData && propertyData.rates){
-                 const defaultRates = {
-                    ...propertyData.rates
-                }
-                for (const rate in defaultRates) {
-                    if (defaultRates[rate] === null) {
-                        defaultRates[rate] = "";
-
-                    }
-                }
-                propertyData.rates = defaultRates;
+        //   Check the Null state Rates and Empty State
+        if (propertyData && propertyData.rates) {
+          const defaultRates = {
+            ...propertyData.rates,
+          };
+          for (const rate in defaultRates) {
+            if (defaultRates[rate] === null) {
+              defaultRates[rate] = "";
             }
-
-            setFields(propertyData)
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoading(false)
+          }
+          propertyData.rates = defaultRates;
         }
+
+        setFields(propertyData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-      fetchPropertyData()
+    };
+    fetchPropertyData();
   }, []);
 
   const handleChange = (e) => {
@@ -120,14 +115,32 @@ const PropertyEditForm = () => {
     }));
   };
 
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async () => {
+    try {
+      const formData = new FormData(e.target);
 
+      const res = await fetch(`/api/properties/${id}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (res.status === 200) {
+        router.push(`/properties/${id}`);
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error('Permission denied');
+      } else {
+        toast.error('Something went wrong');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
     }
-
+  };
   return (
-    mounted && !loading &&(
+    mounted &&
+    !loading && (
       <form onSubmit={handleSubmit}>
         <h2 className='text-3xl text-center font-semibold mb-6'>
           Edit Property
